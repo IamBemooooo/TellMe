@@ -20,20 +20,10 @@ namespace TellMe.Infrastructure.Data.Seed
 
             var context = provider.GetRequiredService<AppDbContext>();
 
-            // Apply pending migrations (preferred). If migrations are not available
-            // fallback to EnsureCreated to create schema for quick development.
-            try
-            {
-                await context.Database.MigrateAsync();
-            }
-            catch (Exception)
-            {
-                // If migrations are not present or there is an issue applying them,
-                // try EnsureCreated as a fallback so seeding can proceed in dev.
-                await context.Database.EnsureCreatedAsync();
-            }
+            // Apply pending migrations (optional)
+            await context.Database.MigrateAsync();
 
-            var hasher = provider.GetRequiredService<IPasswordHasher>();
+            var hasher = provider.GetService<IPasswordHasher>();
 
             var now = DateTime.UtcNow;
 

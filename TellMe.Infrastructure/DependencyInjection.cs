@@ -19,8 +19,7 @@ namespace TellMe.Infrastructure
                 options.UseMySql(
                     connectionString,
                     new MySqlServerVersion(new Version(8, 0, 21)),
-                    b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
-                          .EnableRetryOnFailure()));
+                    b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
             // Add Services
             services.AddScoped<IJwtTokenService, JwtTokenService>();

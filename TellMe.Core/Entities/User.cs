@@ -15,5 +15,6 @@ namespace TellMe.Core.Entities
 
         public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
         public ICollection<UserSessions> UserSessions { get; set; } = new List<UserSessions>();
+        public bool IsLocked => LockedUntil.HasValue && LockedUntil.Value > DateTime.UtcNow;
     }
 }

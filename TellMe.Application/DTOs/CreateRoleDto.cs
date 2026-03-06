@@ -1,6 +1,6 @@
 using System;
 
-namespace TellMe.Application.DTOs.Role
+namespace TellMe.Application.DTOs
 {
     public class CreateRoleDto
     {

@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TellMe.Application.Features.Role;
-using TellMe.Application.DTOs.Role;
+using TellMe.Application.DTOs;
 
 namespace TellMe.Controllers
 {

@@ -32,6 +32,14 @@ namespace TellMe.Application.Features.Role
                 IsActive = true
             };
 
+            //foreach (var permission in request.Permissions)
+            //{
+            //    role.RolePermissions.Add(new Core.Entities.RolePermission
+            //    {
+            //        PermissionId = permission
+            //    });
+            //}
+
             var added = await _roleRepository.AddAsync(role, cancellationToken);
             return added.Id;
         }

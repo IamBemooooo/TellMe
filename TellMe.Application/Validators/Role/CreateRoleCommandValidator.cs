@@ -1,0 +1,14 @@
+using FluentValidation;
+using TellMe.Application.Features.Role;
+
+namespace TellMe.Application.Validators.Role
+{
+    public class CreateRoleCommandValidator : AbstractValidator<CreateRoleCommand>
+    {
+        public CreateRoleCommandValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.Description).MaximumLength(500);
+        }
+    }
+}

@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TellMe.Data;
 using TellMe.Infrastructure.Services;
+using TellMe.Infrastructure.Repositories;
+using TellMe.Core.Entities;
 
 namespace TellMe.Infrastructure
 {
@@ -24,6 +26,9 @@ namespace TellMe.Infrastructure
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             // Note: INotificationService is registered in Api project due to SignalR dependency
+
+            // Register generic repository
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             return services;
         }

@@ -14,4 +14,13 @@
     <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TellMe.Core\TellMe.Core.csproj" />
+    <ProjectReference Include="..\TellMe.Infrastructure\TellMe.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

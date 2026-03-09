@@ -8,5 +8,7 @@ namespace TellMe.Application.Features.Role
     public class CreateRoleCommand : IRequest<Result<RoleDto>>
     {
         public CreateRoleDto RoleDto { get; set; } = null!;
+
+
     }
 }

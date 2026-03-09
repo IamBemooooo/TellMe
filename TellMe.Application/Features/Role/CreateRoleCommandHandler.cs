@@ -93,7 +93,7 @@ namespace TellMe.Application.Features.Role
                 }
 
                 // Optionally log ex here if ILogger is available
-                return Result<RoleDto>.Failure($"Đã có lỗi xảy ra khi thêm mới vai trò");
+                return Result<RoleDto>.Failure($"Lỗi thực thi: {ex.Message} | Chi tiết: {ex.InnerException?.Message}");
             }
         }
     }

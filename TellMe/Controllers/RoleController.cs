@@ -20,7 +20,31 @@ namespace TellMe.Controllers
         public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleDto dto)
         {
             var result = await _mediator.Send(new CreateRoleCommand { RoleDto = dto });
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _mediator.Send(new GetRolesQuery());
+            return Ok(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateRoleDto dto)
+        {
+            var result = await _mediator.Send(new UpdateRoleCommand { RoleDto = dto });
+            if (!result.IsSuccess) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _mediator.Send(new DeleteRoleCommand { Id = id });
+            if (!result.IsSuccess) return NotFound(result);
             return Ok(result);
         }
     }
+
 }

@@ -6,28 +6,22 @@ using System.Threading.Tasks;
 
 namespace TellMe.Application.DTOs
 {
-    public class PermissionDto
+    public class RoleDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
-        public string Resource { get; set; } = string.Empty;
-        public string Action { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+        public string? CreatedBy { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
+        public List<PermissionDto> permissions { get; set; } = new();
     }
 
-    public class AssignPermissionsToRoleDto
-    {
-        public Guid RoleId { get; set; }
-        public List<Guid> PermissionIds { get; set; } = new();
-    }
-
-    public class PermissionBriefDto
+    public class RoleBriefDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string? Description { get; set; }
         public bool IsActive { get; set; }
+        public List<PermissionBriefDto> Permissions { get; set; } = new();
     }
 }

@@ -17,11 +17,10 @@ namespace TellMe.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateRoleCommand command)
+        public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleDto dto)
         {
-            var id = await _mediator.Send(command);
-            var dto = new CreateRoleDto { Id = id, Name = command.Name, Description = command.Description };
-            return Ok();
+            var result = await _mediator.Send(new CreateRoleCommand { RoleDto = dto });
+            return Ok(result);
         }
     }
 }

@@ -10,8 +10,5 @@ namespace TellMe.Application.Common.Interfaces
         IReadOnlyCollection<string> GetPermissions();
         bool IsAuthenticated { get; }
         Task<string?> GetFullNameAsync(CancellationToken cancellationToken = default);
-        Task<string?> GetZaloIdAsync(CancellationToken cancellationToken = default);
-        Guid? ServiceCounterId { get; }
-        string GetCounterCode();
     }
 }

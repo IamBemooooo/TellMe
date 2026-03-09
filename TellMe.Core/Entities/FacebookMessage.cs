@@ -17,6 +17,7 @@ namespace TellMe.Core.Entities
         public string? ReplyToId { get; set; }
 
         public string? ForwardedMessageId { get; set; }
+        public bool isRead { get; set; } = false;
 
         [Column(TypeName = "timestamp")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

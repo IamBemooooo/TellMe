@@ -9,6 +9,7 @@ namespace TellMe.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<FacebookMessage> FacebookMessages { get; set; }
+        public DbSet<MessageReaction> MessageReactions { get; set; }
         public DbSet<User> Users => Set<User>();
         public DbSet<UserSessions> UserSessions => Set<UserSessions>();
         public DbSet<Role> Roles => Set<Role>();
@@ -19,7 +20,7 @@ namespace TellMe.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.ApplyConfiguration(new MessageReactionConfiguration());
             var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
                 v => v,
                 v => DateTime.SpecifyKind(v, DateTimeKind.Utc));

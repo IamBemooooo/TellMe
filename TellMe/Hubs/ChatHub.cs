@@ -29,5 +29,11 @@ namespace TellMe.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
+        //typing
+        public async Task SendTypingStatus(string senderPsid,bool isTyping)
+        {
+            await Clients.Others.SendAsync("ReceiveTypingStatus", senderPsid, isTyping);
+        }
+
     }
 }

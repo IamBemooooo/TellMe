@@ -277,5 +277,37 @@ namespace TellMe.Services
 
             return (firstName, lastName, customerName, avatarUrl);
         }
+        public async Task SaveReactionAsync(string mid, string senderPsid, string reaction, string action, string emoji)
+        {
+            string act = (action ?? "").ToLower().Trim();
+
+            if (act == "remove")
+            {
+                var existing = await _context.MessageReactions
+                    .Where(r => r.MessageId == mid && r.SenderPsid == senderPsid)
+                    .ToListAsync();
+                _context.MessageReactions.RemoveRange(existing);
+            }
+            else if (act == "add")
+            {
+                var existing = await _context.MessageReactions
+                    .Where(r => r.MessageId == mid && r.SenderPsid == senderPsid)
+                    .ToListAsync();
+                _context.MessageReactions.RemoveRange(existing);
+
+                var reactEntry = new MessageReaction
+                {
+                    MessageId = mid,
+                    SenderPsid = senderPsid,
+                    Reaction = reaction,
+                    Emoji = emoji,
+                    CreatedAt = DateTime.UtcNow
+                };
+                _context.MessageReactions.Add(reactEntry);
+            }
+
+            await _context.SaveChangesAsync();
+            await _hubContext.Clients.All.SendAsync("ReceiveReaction", mid, reaction, senderPsid, action, emoji);
+        }
     }
 }

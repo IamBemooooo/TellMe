@@ -28,6 +28,8 @@ namespace TellMe.DTOs
 
         [JsonPropertyName("message")]
         public WebhookMessage? Message { get; set; }
+        [JsonPropertyName("reaction")]
+        public FacebookReaction? Reaction { get; set; }
     }
 
     public class WebhookSender
@@ -70,5 +72,20 @@ namespace TellMe.DTOs
 
         public string? ReplyToId { get; set; }
         public string? ForwardedMessageId { get; set; }
+    }
+
+    public class FacebookReaction
+    {
+        [JsonPropertyName("mid")]
+        public string Mid { get; set; } = string.Empty;
+
+        [JsonPropertyName("action")] 
+        public string Action { get; set; } = string.Empty;
+
+        [JsonPropertyName("reaction")]
+        public string Reaction { get; set; } = string.Empty;
+
+        [JsonPropertyName("emoji")]
+        public string Emoji { get; set; } = string.Empty;
     }
 }

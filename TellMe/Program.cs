@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using TellMe.Application;
+using TellMe.Core.Entities;
 using TellMe.Application.Common.Interfaces;
 using TellMe.Infrastructure;
 using TellMe.Infrastructure.Data.Seed;

@@ -19,9 +19,4 @@
     <ProjectReference Include="..\TellMe.Infrastructure\TellMe.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Permission\Commands\" />
-    <Folder Include="Features\User\Queries\" />
-  </ItemGroup>
-
 </Project>

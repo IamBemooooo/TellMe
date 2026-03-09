@@ -1,11 +1,12 @@
 using MediatR;
 using System;
+using TellMe.Application.DTOs;
+using TellMe.Core.Common;
 
 namespace TellMe.Application.Features.Role
 {
-    public class CreateRoleCommand : IRequest<Guid>
+    public class CreateRoleCommand : IRequest<Result<RoleDto>>
     {
-        public string Name { get; set; } = string.Empty;
-        public string? Description { get; set; }
+        public CreateRoleDto RoleDto { get; set; } = null!;
     }
 }

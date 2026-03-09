@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TellMe.Data;
 using TellMe.DTOs;
 using TellMe.Services;
 
@@ -10,6 +12,7 @@ namespace TellMe.Controllers
     {
         private readonly ChatService _chatService;
         private readonly IConfiguration _configuration;
+        private readonly AppDbContext _context;
 
         public ChatController(ChatService chatService, IConfiguration configuration)
         {
@@ -82,6 +85,21 @@ namespace TellMe.Controllers
                                 null
                             );
                         }
+                        else if (webhookEvent.Reaction != null)
+                        {
+                            var reactData = webhookEvent.Reaction;
+
+                            Console.WriteLine($"---> ACTION NHAN DUOC: '{reactData.Action}'");
+                            Console.WriteLine($"---> REACTION NHAN DUOC: '{reactData.Reaction}'");
+
+                            await _chatService.SaveReactionAsync(
+                                reactData.Mid,
+                                senderPsid,
+                                reactData.Reaction,
+                                reactData.Action,
+                                reactData.Emoji
+                            );
+                        }
                     }
                 }
                 return Content("EVENT_RECEIVED", "text/plain");
@@ -137,6 +155,20 @@ namespace TellMe.Controllers
             {
                 return StatusCode(500, new { message = "Lỗi khi lấy lịch sử chat", error = ex.Message });
             }
+        }
+        [HttpGet("reactions/{messageId}")]
+        public async Task<IActionResult> GetReactionsByMessage(string messageId)
+        {
+            var reactions = await _context.MessageReactions
+                .Where(r => r.MessageId == messageId)
+                .Select(r => new {
+                    r.Reaction,
+                    r.Emoji,
+                    r.SenderPsid
+                })
+                .ToListAsync();
+
+            return Ok(reactions);
         }
     }
 }

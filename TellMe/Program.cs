@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using TellMe.Application;
+using TellMe.Core.Entities;
 using TellMe.Infrastructure;
 using TellMe.Infrastructure.Data.Seed;
 using TellMe.Services;
@@ -56,6 +57,7 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<ChatService>();
 builder.Services.AddScoped<PostService>();
+builder.Services.AddScoped<MessageReaction>();
 
 // Add JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");

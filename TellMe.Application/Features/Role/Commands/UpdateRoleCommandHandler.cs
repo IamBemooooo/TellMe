@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TellMe.Application.DTOs;
-using TellMe.Application.Features.Role;
+using TellMe.Application.Features.Role.Commands;
 using TellMe.Core.Common;
 using TellMe.Core.Entities;
 using TellMe.Data;

@@ -12,7 +12,7 @@ using TellMe.Infrastructure.Repositories;
 using TellMe.Application.Features.Permission.Commands;
 using RoleEntity = TellMe.Core.Entities.Role;
 
-namespace TellMe.Application.Features.Role
+namespace TellMe.Application.Features.Role.Commands
 {
     public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Result<RoleDto>>
     {
@@ -58,7 +58,7 @@ namespace TellMe.Application.Features.Role
                 var Permissions = _context.Permissions
                     .Where(p => request.RoleDto.PermissionIds.Contains(p.Id) && p.IsActive && !p.IsDeleted).Select(p => p.Name).ToList();
 
-                var role = _mapper.Map<Core.Entities.Role>(request.RoleDto);
+                var role = _mapper.Map<RoleEntity>(request.RoleDto);
                 role.CreatedBy = _currentUserService.GetUserId();
                 _context.Roles.Add(role);
                 await _context.SaveChangesAsync(cancellationToken);

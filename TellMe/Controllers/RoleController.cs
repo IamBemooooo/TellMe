@@ -2,6 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TellMe.Application.Features.Role;
 using TellMe.Application.DTOs;
+using TellMe.Application.Features.Role.Commands;
+using TellMe.Application.Features.Role.Queries;
 
 namespace TellMe.Controllers
 {
@@ -23,6 +25,16 @@ namespace TellMe.Controllers
             if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRoleById(Guid id)
+        {
+            var result = await _mediator.Send(new GetRoleByIdQuery(id));
+            if(!result.IsSuccess)
+                return BadRequest(result);
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

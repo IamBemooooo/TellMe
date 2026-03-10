@@ -1,8 +1,8 @@
 using AutoMapper;
 using TellMe.Core.Entities;
 using TellMe.Application.DTOs;
-using TellMe.Application.Features.Role;
 using System.Linq;
+using TellMe.Application.Features.Role.Commands;
 
 namespace TellMe.Application.Common.Mappings
 {

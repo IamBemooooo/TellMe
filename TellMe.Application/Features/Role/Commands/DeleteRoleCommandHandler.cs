@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TellMe.Application.Features.Role; 
 using TellMe.Core.Common;
-using TellMe.Data; 
+using TellMe.Data;
 
-namespace TellMe.Application.Features.Role
+namespace TellMe.Application.Features.Role.Commands
 {
     public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, Result<bool>>
     {

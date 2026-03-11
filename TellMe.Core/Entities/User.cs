@@ -6,6 +6,7 @@ namespace TellMe.Core.Entities
         public string? Email { get; set; }
         public string PasswordHash { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        public string? ProfileImageUrl { get; set; }
         public bool IsActive { get; set; } = true;
         public DateTime? LastLoginAt { get; set; }
         public DateTime? LockedUntil { get; set; }

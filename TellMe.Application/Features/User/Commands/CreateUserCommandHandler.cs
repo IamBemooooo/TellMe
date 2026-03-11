@@ -90,7 +90,8 @@ namespace TellMe.Application.Features.User.Commands
                     Email = dto.Email,
                     IsActive = dto.IsActive,
                     //IsZaloUser = false,
-                    PasswordHash = _passwordHasher.HashPassword(dto.Password)
+                    PasswordHash = _passwordHasher.HashPassword(dto.Password),
+                    ProfileImageUrl = dto.ProfileImageUrl
                 };
 
 

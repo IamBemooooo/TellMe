@@ -67,6 +67,12 @@ namespace TellMe.Application.Features.User.Commands
                     //changedValues["IsActive"] = dto.IsActive.Value;
                 }
 
+                if (!string.IsNullOrWhiteSpace(dto.ProfileImageUrl) && user.ProfileImageUrl != dto.ProfileImageUrl)
+                {
+                    user.ProfileImageUrl = dto.ProfileImageUrl;
+                    //changedValues["IsActive"] = dto.IsActive.Value;
+                }
+
                 if (dto.RoleId == Guid.Empty)
                     return Result<UserDto>.Failure("Phải chọn role");
 

@@ -11,8 +11,12 @@ namespace TellMe.Controllers
     [Route("api/[controller]")]
     public class RoleController : ControllerBase
     {
-        private readonly IMediator _mediator;
-
+        private readonly IMediator _mediator; [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _mediator.Send(new GetRolesQuery());
+            return Ok(result);
+        }
         public RoleController(IMediator mediator)
         {
             _mediator = mediator;
@@ -35,12 +39,7 @@ namespace TellMe.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _mediator.Send(new GetRolesQuery());
-            return Ok(result);
-        }
+    
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateRoleDto dto)
@@ -54,7 +53,7 @@ namespace TellMe.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _mediator.Send(new DeleteRoleCommand { Id = id });
-            if (!result.IsSuccess) return NotFound(result);
+            if (!result.IsSuccess) return BadRequest(result);
             return Ok(result);
         }
     }

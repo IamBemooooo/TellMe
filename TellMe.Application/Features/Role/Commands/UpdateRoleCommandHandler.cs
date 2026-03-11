@@ -35,6 +35,7 @@ public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, Resul
         }
         role.Name = request.RoleDto.Name;
         role.Description = request.RoleDto.Description;
+        role.IsActive = request.RoleDto.isActive;
 
         var removedPermissions = role.RolePermissions
             .Where(rp => !request.RoleDto.PermissionIds.Contains(rp.PermissionId)).ToList();

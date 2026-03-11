@@ -25,7 +25,14 @@ public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, Resul
             .FirstOrDefaultAsync(r => r.Id == request.RoleDto.Id, ct);
 
         if (role == null) return Result<RoleDto>.Failure("Không tìm thấy vai trò");
-
+        var isNameExist = await _context.Roles
+            .AnyAsync(r => r.Name == request.RoleDto.Name
+                           && r.Id != role.Id
+                           && !r.IsDeleted, ct);
+        if (isNameExist)
+        {
+            return Result<RoleDto>.Failure("Tên vai trò này đã tồn tại, không thể update!");
+        }
         role.Name = request.RoleDto.Name;
         role.Description = request.RoleDto.Description;
 
@@ -33,7 +40,6 @@ public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, Resul
             .Where(rp => !request.RoleDto.PermissionIds.Contains(rp.PermissionId)).ToList();
         _context.RolePermissions.RemoveRange(removedPermissions);
 
-        // Thêm những quyền mới chưa có trong DB
         var existingPermissionIds = role.RolePermissions.Select(rp => rp.PermissionId).ToList();
         var newPermissionIds = request.RoleDto.PermissionIds
             .Where(pId => !existingPermissionIds.Contains(pId))
@@ -41,7 +47,6 @@ public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, Resul
 
         await _context.RolePermissions.AddRangeAsync(newPermissionIds, ct);
 
-        // 4. Lưu thay đổi
         await _context.SaveChangesAsync(ct);
 
         return Result<RoleDto>.Success(_mapper.Map<RoleDto>(role));

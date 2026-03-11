@@ -14,10 +14,11 @@ namespace TellMe.Controllers
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
 
-        public ChatController(ChatService chatService, IConfiguration configuration)
+        public ChatController(ChatService chatService, IConfiguration configuration,AppDbContext context)
         {
             _chatService = chatService;
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpGet]
@@ -159,6 +160,8 @@ namespace TellMe.Controllers
         [HttpGet("reactions/{messageId}")]
         public async Task<IActionResult> GetReactionsByMessage(string messageId)
         {
+            if (string.IsNullOrEmpty(messageId)) return BadRequest("MessageId không được để trống");
+
             var reactions = await _context.MessageReactions
                 .Where(r => r.MessageId == messageId)
                 .Select(r => new {
@@ -166,9 +169,10 @@ namespace TellMe.Controllers
                     r.Emoji,
                     r.SenderPsid
                 })
-                .ToListAsync();
+                .ToListAsync(); 
 
             return Ok(reactions);
+
         }
     }
 }

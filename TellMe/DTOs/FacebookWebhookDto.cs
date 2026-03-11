@@ -73,7 +73,12 @@ namespace TellMe.DTOs
         public string? ReplyToId { get; set; }
         public string? ForwardedMessageId { get; set; }
     }
-
+    public class SendReactionRequest
+    {
+        public string Psid { get; set; } = string.Empty;
+        public string MessageId { get; set; } = string.Empty;
+        public string Reaction { get; set; } = string.Empty; 
+    }
     public class FacebookReaction
     {
         [JsonPropertyName("mid")]

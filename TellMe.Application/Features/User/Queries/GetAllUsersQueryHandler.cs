@@ -62,6 +62,7 @@ namespace TellMe.Application.Features.User.Queries
                     IsActive = u.IsActive,
                     LastLoginAt = u.LastLoginAt,
                     CreatedAt = u.CreatedAt,
+                    ProfileImageUrl = u.ProfileImageUrl,
                     Roles = u.UserRoles.Select(ur => new RoleBriefDto
                     {
                         Id = ur.Role.Id,

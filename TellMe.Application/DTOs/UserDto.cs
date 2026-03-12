@@ -28,6 +28,7 @@ namespace TellMe.Application.DTOs
 
         // Profile
         public List<RoleBriefDto> Roles { get; set; } = new();
+        public string? ProfileImageUrl { get; set; } = string.Empty;
     }
 
     public class UserDto

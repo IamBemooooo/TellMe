@@ -44,33 +44,27 @@ namespace TellMe.Application.Features.User.Commands
                 if (user == null)
                     return Result<UserDto>.Failure($"Người dùng với Id {request.Id} không tồn tại");
 
-                //var changedValues = new Dictionary<string, object?>();
-
                 if (string.IsNullOrWhiteSpace(dto.Name))
                     return Result<UserDto>.Failure("Họ và tên là bắt buộc");
 
                 if (user.Name != dto.Name)
                 {
                     user.Name = dto.Name;
-                    //changedValues["Name"] = dto.Name;
                 }
 
                 if (!string.IsNullOrWhiteSpace(dto.Email) && user.Email != dto.Email)
                 {
                     user.Email = dto.Email;
-                    //changedValues["Email"] = dto.Email;
                 }
 
                 if (dto.IsActive.HasValue && user.IsActive != dto.IsActive.Value)
                 {
                     user.IsActive = dto.IsActive.Value;
-                    //changedValues["IsActive"] = dto.IsActive.Value;
                 }
 
                 if (!string.IsNullOrWhiteSpace(dto.ProfileImageUrl) && user.ProfileImageUrl != dto.ProfileImageUrl)
                 {
                     user.ProfileImageUrl = dto.ProfileImageUrl;
-                    //changedValues["IsActive"] = dto.IsActive.Value;
                 }
 
                 if (dto.RoleId == Guid.Empty)
@@ -88,22 +82,25 @@ namespace TellMe.Application.Features.User.Commands
 
                 if (currentRoleId != dto.RoleId)
                 {
-                    // Replace ExecuteDeleteAsync with removing tracked UserRole entities for compatibility
-                    var userRolesToRemove = user.UserRoles.ToList();
-                    if (userRolesToRemove.Any())
+                    // Delete existing user roles directly in database to avoid concurrency issues
+                    await _context.Database.ExecuteSqlRawAsync("DELETE FROM UserRoles WHERE UserId = {0}", new object[] { user.Id }, cancellationToken);
+
+                    // Detach any tracked UserRole entities for this user so EF won't try to delete them again
+                    var tracked = _context.ChangeTracker.Entries<UserRole>()
+                        .Where(e => e.Entity.UserId == user.Id)
+                        .ToList();
+
+                    foreach (var entry in tracked)
                     {
-                        _context.UserRoles.RemoveRange(userRolesToRemove);
+                        entry.State = EntityState.Detached;
                     }
 
-                    user.UserRoles.Clear();
-
-                    user.UserRoles.Add(new UserRole
+                    // Add new role link
+                    _context.UserRoles.Add(new UserRole
                     {
                         UserId = user.Id,
                         RoleId = dto.RoleId
                     });
-
-                    //changedValues["RoleId"] = dto.RoleId;
                 }
 
                 await _context.SaveChangesAsync(cancellationToken);
@@ -119,12 +116,24 @@ namespace TellMe.Application.Features.User.Commands
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _logger.LogError(ex,
-                    "UpdateUser concurrency error. UserId={UserId}",
-                    request.Id);
+                _logger.LogWarning(ex, "UpdateUser concurrency conflict. UserId={UserId}", request.Id);
 
-                return Result<UserDto>.Failure(
-                    "Dữ liệu đã bị thay đổi bởi người khác, vui lòng tải lại và thử lại");
+                var entry = ex.Entries.FirstOrDefault();
+                if (entry != null)
+                {
+                    var databaseValues = await entry.GetDatabaseValuesAsync(cancellationToken);
+                    if (databaseValues == null)
+                    {
+                        return Result<UserDto>.Failure("Người dùng đã bị xóa bởi người khác.");
+                    }
+
+                    var dbUser = (TellMe.Core.Entities.User)databaseValues.ToObject()!;
+                    var dbDto = _mapper.Map<UserDto>(dbUser);
+
+                    return Result<UserDto>.Failure("Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại và thử lại.");
+                }
+
+                return Result<UserDto>.Failure("Dữ liệu đã bị thay đổi bởi người khác, vui lòng tải lại và thử lại");
             }
             catch (Exception ex)
             {

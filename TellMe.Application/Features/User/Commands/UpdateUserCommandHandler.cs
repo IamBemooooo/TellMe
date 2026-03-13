@@ -62,7 +62,7 @@ namespace TellMe.Application.Features.User.Commands
                     user.IsActive = dto.IsActive.Value;
                 }
 
-                if (!string.IsNullOrWhiteSpace(dto.ProfileImageUrl) && user.ProfileImageUrl != dto.ProfileImageUrl)
+                if (user.ProfileImageUrl != dto.ProfileImageUrl)
                 {
                     user.ProfileImageUrl = dto.ProfileImageUrl;
                 }

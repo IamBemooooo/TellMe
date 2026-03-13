@@ -15,6 +15,8 @@ namespace TellMe.Application
 
             // Add Validation Behavior
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            // Add Logging Behavior
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             // Add FluentValidation (scans this assembly for validators)
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
